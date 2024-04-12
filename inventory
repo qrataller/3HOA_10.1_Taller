@@ -1,2 +1,9 @@
-[gns3]
-192.168.56.119
+[router]
+192.168.122.10
+
+[router:vars]
+ansible_user=roseann
+ansible_password=taller
+ansible_network_os=ios
+ansible_become=yes
+ansible_become_method=enable

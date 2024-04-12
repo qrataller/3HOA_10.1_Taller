@@ -1,11 +1,58 @@
 ---
-
-- hosts: gns3
+- hosts: router
+  connection: network_cli
   become: true
+  gather_facts: no
   tasks:
 
-  - name: install updates 
-    apt:
-      upgrade: dist
-      update_cache: yes
-      
+  - name: hostname playbook_R1_Taller
+    ios_config:
+      lines:
+        - hostname playbook_R1_Taller
+    become: yes
+    become_method: enable
+
+  - name: no ip domain-lookup
+    ios_config:
+      lines:
+        - no ip domain-lookup
+    become: yes
+    become_method: enable
+
+  - name: service password-encryption
+    ios_config:
+      lines:
+        - service password-encryption
+    become: yes
+    become_method: enable
+
+  - name: banner motd
+    ios_banner:
+      banner: login
+      text: |
+        Unauthorized access is prohibited.
+    become: yes
+    become_method: enable
+
+  - name: line console 0
+    ios_config:
+      lines:
+        - password taller
+        - login
+      parents: line console 0
+    become: yes
+    become_method: enable
+
+  - name: enable secret taller
+    ios_config:
+      lines:
+        - enable secret taller
+
+  - name: save configuration
+    ios_config:
+      lines:
+        - do write memory
+    become: yes
+    become_method: enable
+
+
